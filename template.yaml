@@ -1,0 +1,69 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  backend-python
+
+  Sample SAM Template for backend-python
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+
+Resources:
+  GetVisitsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/
+      Handler: appGet.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        GetVisits:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /
+            Method: get
+  UpdateVisitsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: appPost.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Events:
+        UpdateVisits:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
+  ResumeSiteMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions: [{ AttributeName: metric, AttributeType: S }]
+      BillingMode: PAY_PER_REQUEST
+      KeySchema: [{ AttributeName: metric, KeyType: HASH }]
+      TableName: ResumeSiteMetrics
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  WebsiteApi:
+    Description: "API Gateway endpoint URL for Prod stage for Get and Update Visits function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  GetVisitsFunctionArn:
+    Description: "Get Visits Lambda Function ARN"
+    Value: !GetAtt GetVisitsFunction.Arn
+  UpdateVisitsFunctionArn:
+    Description: "Update Visits Lambda Function ARN"
+    Value: !GetAtt UpdateVisitsFunction.Arn
+  GetVisitsFunctionIamRole:
+    Description: "Implicit IAM Role created for GET function"
+    Value: !GetAtt GetVisitsFunctionRole.Arn
+  UpdateVisitsFunctionIamRole:
+    Description: "Implicit IAM Role created for UPDATE function"
+    Value: !GetAtt UpdateVisitsFunctionRole.Arn

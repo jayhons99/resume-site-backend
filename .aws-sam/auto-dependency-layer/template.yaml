@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'backend-python
+
+  Sample SAM Template for backend-python
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+Resources:
+  GetVisitsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetVisitsFunction
+      Handler: appGet.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Events:
+        GetVisits:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+      Layers:
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.GetVisitsFunction17a6b362DepLayer
+    Metadata:
+      SamResourceId: GetVisitsFunction
+  UpdateVisitsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateVisitsFunction
+      Handler: appPost.lambda_handler
+      Runtime: python3.9
+      Architectures:
+      - x86_64
+      Events:
+        UpdateVisits:
+          Type: Api
+          Properties:
+            Path: /
+            Method: post
+      Layers:
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.UpdateVisitsFunction3b80a68dDepLayer
+    Metadata:
+      SamResourceId: UpdateVisitsFunction
+  ResumeSiteMetricsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: metric
+        AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+      - AttributeName: metric
+        KeyType: HASH
+      TableName: ResumeSiteMetrics
+  AwsSamAutoDependencyLayerNestedStack:
+    DeletionPolicy: Delete
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      TemplateURL: C:\Development\aws-projects\website-backend\backend-python\.aws-sam\auto-dependency-layer\adl_nested_template.yaml
+    Type: AWS::CloudFormation::Stack
+Outputs:
+  WebsiteApi:
+    Description: API Gateway endpoint URL for Prod stage for Get and Update Visits
+      function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+  GetVisitsFunctionArn:
+    Description: Get Visits Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - GetVisitsFunction
+      - Arn
+  UpdateVisitsFunctionArn:
+    Description: Update Visits Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - UpdateVisitsFunction
+      - Arn
+  GetVisitsFunctionIamRole:
+    Description: Implicit IAM Role created for GET function
+    Value:
+      Fn::GetAtt:
+      - GetVisitsFunctionRole
+      - Arn
+  UpdateVisitsFunctionIamRole:
+    Description: Implicit IAM Role created for UPDATE function
+    Value:
+      Fn::GetAtt:
+      - UpdateVisitsFunctionRole
+      - Arn

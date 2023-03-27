@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS SAM CLI Nested Stack for Auto Dependency Layer Creation
+Metadata:
+  SamCliInfo: 1.77.0
+  key: AWS SAM CLI sync command
+Outputs:
+  GetVisitsFunction17a6b362DepLayer:
+    Value:
+      Ref: GetVisitsFunction17a6b362DepLayer
+  UpdateVisitsFunction3b80a68dDepLayer:
+    Value:
+      Ref: UpdateVisitsFunction3b80a68dDepLayer
+Resources:
+  GetVisitsFunction17a6b362DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.9
+      ContentUri: C:\Development\aws-projects\website-backend\backend-python\.aws-sam\auto-dependency-layer\GetVisitsFunction17a6b362DepLayer
+      Description: Auto created layer for dependencies of function GetVisitsFunction
+      LayerName: backend-python0753c473-GetVisitsFunction17a6b362-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  UpdateVisitsFunction3b80a68dDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - python3.9
+      ContentUri: C:\Development\aws-projects\website-backend\backend-python\.aws-sam\auto-dependency-layer\UpdateVisitsFunction3b80a68dDepLayer
+      Description: Auto created layer for dependencies of function UpdateVisitsFunction
+      LayerName: backend-python0753c473-UpdateVisitsFunction3b80a68d-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+Transform: AWS::Serverless-2016-10-31

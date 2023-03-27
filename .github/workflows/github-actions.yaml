@@ -17,4 +17,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - run: sam build
-      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name backend-python --s3-bucket aws-sam-cli-managed-default-samclisourcebucket-19eka3qghe578 --capabilities CAPABILITY_IAM --region us-east-1
+      - run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name backend-python --capabilities CAPABILITY_IAM --region us-east-1

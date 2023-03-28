@@ -6,11 +6,8 @@ Source code was initialized using a Serverless Application Model (SAM) template.
 
 To build:
 
-`code
->> sam build
-`
-To deploy to AWS:
+`sam build`
 
-`code
->> sam deploy --guided
-`
+To deploy:
+
+`sam deploy --guided`

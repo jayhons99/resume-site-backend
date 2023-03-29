@@ -10,7 +10,8 @@ dynamo_table = dynamodb.Table(os.environ['TABLE_NAME'])
 def lambda_handler(event, context):
     statusCode = 200
     headers = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "access-control-allow-origin": "*"
     }
     response = dynamo_table.get_item(
         Key={
